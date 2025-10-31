@@ -186,3 +186,62 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-under-review {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.status-approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.referral-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.referral-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.15);
+}
+
+.form-step {
+  transition: all 0.3s ease;
+}
+
+.form-step.active {
+  transform: scale(1.02);
+}
+
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.stats-icon {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}

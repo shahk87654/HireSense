@@ -14,7 +14,7 @@ export default function Dashboard() {
       if (!mounted) return
       setData(res.data)
     }).catch(() => {
-      setData({ total: 124, avgFit: 74, diversity: 0.68, referrals: 12 })
+      // No fallback data, data remains null
     }).finally(() => setLoading(false))
     return () => { mounted = false }
   }, [])

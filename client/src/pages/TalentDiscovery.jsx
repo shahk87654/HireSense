@@ -20,21 +20,7 @@ export default function TalentDiscovery() {
 
   const fetchStats = async () => {
     try {
-      // This would typically fetch real stats from the API
-      // For now, we'll use demo data
-      setStats({
-        totalCandidates: 1247,
-        recentSearches: 89,
-        bulkAnalyses: 23,
-        avgFitScore: 78
-      })
-
-      setRecentActivity([
-        { id: 1, type: 'search', description: 'Searched for "React Developer"', time: '2 minutes ago' },
-        { id: 2, type: 'bulk', description: 'Analyzed 5 resumes for Product Manager role', time: '15 minutes ago' },
-        { id: 3, type: 'search', description: 'Searched for "Data Scientist"', time: '1 hour ago' },
-        { id: 4, type: 'bulk', description: 'Analyzed 12 resumes for Software Engineer role', time: '2 hours ago' }
-      ])
+      // TODO: Implement API call to fetch real stats
     } catch (error) {
       console.error('Failed to fetch stats:', error)
     } finally {

@@ -1,3 +1,5 @@
 - [x] Remove hardcoded demo stats from fetchStats in CultureFit.jsx
 - [x] Remove hardcoded recentActivity from fetchStats in CultureFit.jsx
 - [x] Remove fallback setScore(72) in analyze function in CultureFit.jsx
+- [x] Remove hardcoded demo stats from fetchStats in TalentDiscovery.jsx
+- [x] Remove hardcoded recentActivity from fetchStats in TalentDiscovery.jsx

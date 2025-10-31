@@ -9,7 +9,8 @@ const Login = lazy(() => import('./pages/Login'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const ResumeScreening = lazy(() => import('./pages/ResumeScreening'))
 const ReferralPortal = lazy(() => import('./pages/ReferralPortal'))
-const DiversityAnalytics = lazy(() => import('./pages/DiversityAnalytics'))
+const EmployeeReferral = lazy(() => import('./pages/EmployeeReferral'))
+
 const TalentDiscovery = lazy(() => import('./pages/TalentDiscovery'))
 const CultureFit = lazy(() => import('./pages/CultureFit'))
 
@@ -34,7 +35,8 @@ export default function App() {
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/resume" element={<ProtectedRoute><ResumeScreening /></ProtectedRoute>} />
                 <Route path="/referrals" element={<ProtectedRoute><ReferralPortal /></ProtectedRoute>} />
-                <Route path="/diversity" element={<ProtectedRoute><DiversityAnalytics /></ProtectedRoute>} />
+                <Route path="/refer" element={<EmployeeReferral />} />
+
                 <Route path="/talent" element={<ProtectedRoute><TalentDiscovery /></ProtectedRoute>} />
                 <Route path="/culture" element={<ProtectedRoute><CultureFit /></ProtectedRoute>} />
                 <Route path="*" element={<div>Not Found</div>} />

@@ -1,14 +1,7 @@
-import Candidate from '../models/Candidate.js'
-import { searchTalent as aiSearchTalent, analyzeResume } from '../services/aiServiceGemini.js'
-import { safeProcess } from '../utils/safeProcess.js'
-import multer from 'multer'
-import { PDFExtract } from 'pdf.js-extract'
-import JobDescription from '../models/JobDescription.js'
+// Test script for culture fit assessment in talent discovery
+import fs from 'fs'
 
-const pdfExtract = new PDFExtract()
-const upload = multer({ storage: multer.memoryStorage() })
-
-// Manual resume analysis function - Enhanced Precise Job Description Matching
+// Copy the function directly to avoid import issues
 const manualResumeAnalysis = (resumeText, jobDescription) => {
   const resumeLower = resumeText.toLowerCase()
   const jobLower = jobDescription.toLowerCase()
@@ -296,159 +289,124 @@ const manualResumeAnalysis = (resumeText, jobDescription) => {
   }
 }
 
-// Manual talent search function
-const manualTalentSearch = (query, candidates) => {
-  const qterms = query.toLowerCase().split(/\W+/).filter(Boolean)
-  const ranked = candidates.map(c => {
-    const skills = (c.skills || []).join(' ').toLowerCase()
-    const experience = (c.experience_summary || '').toLowerCase()
-    const name = (c.name || '').toLowerCase()
-    const location = (c.location || '').toLowerCase()
+// Test data: Different resume texts with various culture indicators
+const testResumes = [
+  {
+    name: 'Team Player Resume',
+    text: `John Doe
+Software Developer with 5 years experience.
+Team player who excels in collaborative environments.
+Worked on group projects and contributed to team success.
+Skills: JavaScript, React, Node.js`,
+    jobDesc: 'Looking for a collaborative team player with JavaScript skills.'
+  },
+  {
+    name: 'Leadership Resume',
+    text: `Jane Smith
+Senior Developer with 8 years experience.
+Leadership experience leading development teams.
+Managed projects and mentored junior developers.
+Led cross-functional teams to deliver successful products.
+Skills: Python, Django, AWS`,
+    jobDesc: 'Seeking a leader who can manage teams and deliver projects.'
+  },
+  {
+    name: 'Innovation Resume',
+    text: `Bob Johnson
+Full Stack Developer with 6 years experience.
+Innovative problem solver who develops creative solutions.
+Strategic thinking and analytical approach to challenges.
+Continuous learning and professional development.
+Skills: Java, Spring, MongoDB`,
+    jobDesc: 'Need an innovative developer who solves complex problems.'
+  },
+  {
+    name: 'Communication Resume',
+    text: `Alice Brown
+Frontend Developer with 4 years experience.
+Strong communication skills with client-facing experience.
+Public speaking at conferences and stakeholder presentations.
+Collaborative and transparent in all interactions.
+Skills: HTML, CSS, JavaScript, Vue.js`,
+    jobDesc: 'Require excellent communication and client interaction skills.'
+  },
+  {
+    name: 'Adaptability Resume',
+    text: `Charlie Wilson
+DevOps Engineer with 7 years experience.
+Highly adaptable and flexible in fast-paced environments.
+Quick learner who embraces new technologies.
+Versatile across multiple platforms and tools.
+Skills: Docker, Kubernetes, CI/CD, Linux`,
+    jobDesc: 'Looking for adaptable engineer who learns quickly.'
+  },
+  {
+    name: 'Work Ethic Resume',
+    text: `Diana Lee
+Backend Developer with 5 years experience.
+Dedicated and committed professional.
+Reliable and accountable for deliverables.
+Hardworking with strong work ethic.
+Skills: Node.js, Express, PostgreSQL`,
+    jobDesc: 'Need dedicated professional with strong work ethic.'
+  },
+  {
+    name: 'Values Alignment Resume',
+    text: `Edward Kim
+QA Engineer with 6 years experience.
+Integrity and ethical approach to quality assurance.
+Customer-focused with commitment to excellence.
+Transparent communication and honest feedback.
+Skills: Selenium, Jest, API testing`,
+    jobDesc: 'Seeking values-aligned professional focused on quality.'
+  },
+  {
+    name: 'Professional Development Resume',
+    text: `Fiona Garcia
+Mobile Developer with 5 years experience.
+Continuous professional development through certifications.
+Mentoring junior developers and knowledge sharing.
+Training programs and skill enhancement.
+Skills: React Native, iOS, Android`,
+    jobDesc: 'Looking for developer committed to professional growth.'
+  },
+  {
+    name: 'Edge Case - No Culture Indicators',
+    text: `Generic Developer
+Basic coding skills.
+No special mentions of culture or soft skills.
+Skills: Basic programming`,
+    jobDesc: 'Basic programming job with no culture requirements.'
+  },
+  {
+    name: 'Edge Case - Maximum Culture Match',
+    text: `Super Candidate
+Team player, leadership, innovative, communication, adaptable, dedicated, integrity, professional development.
+Led teams, mentored, creative solutions, presentations, flexible, committed, ethical, certifications.
+All culture indicators present.`,
+    jobDesc: 'Perfect culture fit required for leadership role.'
+  }
+]
 
-    const combinedText = `${skills} ${experience} ${name} ${location}`
-    const score = qterms.reduce((acc, term) => acc + (combinedText.includes(term) ? 1 : 0), 0)
+// Run tests
+console.log('=== Culture Fit Assessment Testing ===\n')
 
-    return { ...c, score }
-  }).sort((a, b) => b.score - a.score)
+testResumes.forEach((test, index) => {
+  console.log(`Test ${index + 1}: ${test.name}`)
+  console.log(`Resume: ${test.text.substring(0, 100)}...`)
+  console.log(`Job Description: ${test.jobDesc}`)
 
-  return ranked.slice(0, 10)
-}
-
-// POST /api/talent/search
-// Body: { q: string }
-export const searchTalent = async (req, res) => {
   try {
-    const { q } = req.body
-    if (!q) return res.status(400).json({ success: false, message: 'Query required' })
-
-    const candidates = await Candidate.find()
-
-  const results = await safeProcess(
-    () => aiSearchTalent(q, candidates),
-    () => manualTalentSearch(q, candidates)
-  )
-
-    // aiService.searchTalent returns ranked candidates with a `score` property (similarity).
-    const formatted = results.map(r => ({
-      name: r.name,
-      skills: r.skills || [],
-      location: r.location || r.location,
-      fit_score: typeof r.score === 'number' ? Math.round(r.score * 100) / 100 : r.fit_score || 0,
-      analysis_mode: 'manual'
-    }))
-
-    res.json({ success: true, candidates: formatted.slice(0, 10) })
-  } catch (err) {
-    console.error('searchTalent error', err)
-    res.status(500).json({ success: false, message: 'Talent search failed' })
-  }
-}
-
-// POST /api/talent/bulk-analyze
-// Body: { jobDescription: string, files: array of PDF files }
-export const bulkResumeAnalysis = async (req, res) => {
-  try {
-    if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
-      return res.status(400).json({ success: false, message: 'No resume files uploaded' })
-    }
-
-    const { jobDescription } = req.body
-    if (!jobDescription || jobDescription.trim().length === 0) {
-      return res.status(400).json({ success: false, message: 'Job description is required' })
-    }
-
-    const files = req.files // Array of files
-
-    const results = []
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-
-      try {
-        // Extract text from each PDF file
-        const data = await pdfExtract.extractBuffer(file.buffer)
-        const resumeText = data.pages.map(p => p.content.map(c => c.str).join(' ')).join('\n')
-
-        // Analyze each resume using the existing manual analysis function
-        const analysis = await safeProcess(
-          () => analyzeResume(resumeText, { description: jobDescription }),
-          () => manualResumeAnalysis(resumeText, jobDescription)
-        )
-
-        results.push({
-          resumeNumber: i + 1,
-          name: analysis.name || `Resume ${i + 1}`,
-          email: analysis.email || '',
-          skills: analysis.skills || [],
-          experience_summary: analysis.experience_summary || '',
-          education: analysis.education || '',
-          fit_score: analysis.fit_score || 0,
-          reason: analysis.reason || '',
-          analysis_mode: analysis.analysis_mode || 'manual'
-        })
-      } catch (err) {
-        console.error(`Error analyzing resume ${i + 1}:`, err)
-        results.push({
-          resumeNumber: i + 1,
-          name: `Resume ${i + 1}`,
-          fit_score: 0,
-          skills: [],
-          reason: 'Failed to analyze resume',
-          analysis_mode: 'manual'
-        })
-      }
-    }
-
-    // Sort by fit score (highest first)
-    results.sort((a, b) => (b.fit_score || 0) - (a.fit_score || 0))
-
-    // Add ranking
-    results.forEach((result, index) => {
-      result.ranking = index + 1
-    })
-
-    res.json({
-      success: true,
-      totalResumes: files.length,
-      jobDescription: jobDescription.substring(0, 200) + '...',
-      results: results
-    })
-
-  } catch (err) {
-    console.error('bulkResumeAnalysis error:', err)
-    res.status(500).json({ success: false, message: 'Bulk resume analysis failed' })
-  }
-}
-
-// Helper function to split text into individual resumes
-function splitResumesFromText(fullText) {
-  // Common separators for multiple resumes in one document
-  const separators = [
-    /\n\s*(?=Resume\s*\d|\n\s*Name:|\n\s*Contact|\n\s*Professional|\n\s*Work Experience)/gi,
-    /\n\s*(?=Page \d|\f)/gi, // Page breaks
-    /\n\s*(?=\w+\s+\w+\s*\n\s*(?:\d{1,2}\/\d{1,2}\/\d{4}|\w+@\w+\.\w+))/gi // Name followed by date or email
-  ]
-
-  let resumeTexts = [fullText]
-
-  for (const separator of separators) {
-    const newSplits = []
-    for (const text of resumeTexts) {
-      newSplits.push(...text.split(separator).filter(t => t.trim().length > 50)) // Minimum length filter
-    }
-    resumeTexts = newSplits
-    if (resumeTexts.length > 1) break // Stop at first successful split
+    const result = manualResumeAnalysis(test.text, test.jobDesc)
+    console.log(`Fit Score: ${result.fit_score}`)
+    console.log(`Reason: ${result.reason}`)
+    console.log(`Skills Found: ${result.skills.join(', ')}`)
+    console.log(`Education: ${result.education}`)
+  } catch (error) {
+    console.error(`Error in test ${index + 1}:`, error.message)
   }
 
-  // If no clear separators found, try to split by double line breaks
-  if (resumeTexts.length === 1) {
-    resumeTexts = fullText.split(/\n\s*\n\s*\n/).filter(t => t.trim().length > 100)
-  }
+  console.log('---\n')
+})
 
-  // Ensure we have at least some resumes
-  if (resumeTexts.length === 0) {
-    resumeTexts = [fullText]
-  }
-
-  return resumeTexts.slice(0, 50) // Limit to 50 resumes max
-}
+console.log('Testing completed.')

@@ -10,11 +10,11 @@ export default function CandidateCard({ c, onReanalyze }) {
           <div className="text-sm text-slate-500">{c.skills?.join(', ')}</div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold">{c.fit}%</div>
+          <div className="text-2xl font-bold">{c.fit_score || c.fit || 0}%</div>
           <div className="text-xs text-slate-400">Fit Score</div>
         </div>
       </div>
-      <div className="mt-3 text-sm text-slate-600">{c.summary}</div>
+      <div className="mt-3 text-sm text-slate-600">{c.experience_summary || c.summary || c.reason}</div>
       <div className="mt-4 flex justify-end">
         <button onClick={() => onReanalyze && onReanalyze(c)} className="text-sm px-3 py-1 rounded-md bg-primary text-white">Reanalyze</button>
       </div>

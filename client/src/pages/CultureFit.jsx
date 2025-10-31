@@ -22,21 +22,7 @@ export default function CultureFit() {
 
   const fetchStats = async () => {
     try {
-      // This would typically fetch real stats from the API
-      // For now, we'll use demo data
-      setStats({
-        totalAnalyses: 456,
-        avgFitScore: 74,
-        recentAnalyses: 23,
-        highFitCount: 89
-      })
-
-      setRecentActivity([
-        { id: 1, type: 'analysis', description: 'Analyzed resume for Software Engineer', score: 85, time: '5 minutes ago' },
-        { id: 2, type: 'analysis', description: 'Culture fit assessment for Product Manager', score: 92, time: '1 hour ago' },
-        { id: 3, type: 'analysis', description: 'Resume analysis for Data Scientist', score: 78, time: '2 hours ago' },
-        { id: 4, type: 'analysis', description: 'Culture fit check for UX Designer', score: 88, time: '3 hours ago' }
-      ])
+      // TODO: Implement API call to fetch real stats
     } catch (error) {
       console.error('Failed to fetch stats:', error)
     } finally {
@@ -51,7 +37,6 @@ export default function CultureFit() {
       setScore(res.data?.score ?? 72)
     } catch (e) {
       console.error(e)
-      setScore(72)
     } finally { setLoading(false) }
   }
 

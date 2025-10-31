@@ -5,5 +5,5 @@ import app from './app.js'
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => {
-  console.log(`HireSense API server listening on port ${PORT}`)
+  console.log(`TalentX API server listening on port ${PORT}`)
 })

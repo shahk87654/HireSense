@@ -39,7 +39,7 @@ export default function Login() {
     <div className="max-w-md mx-auto mt-24">
       <motion.div initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="p-8 bg-white rounded-2xl card-shadow">
         <motion.div className="mb-4 text-center text-2xl font-semibold" animate={{ rotate: [0, 8, -6, 0] }} transition={{ duration: 4, repeat: Infinity }}>
-          HireSense
+          TalentX
         </motion.div>
         <form onSubmit={submit} className="space-y-4">
           <input required type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 border rounded-lg" />

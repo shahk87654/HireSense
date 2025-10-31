@@ -1,6 +1,6 @@
-# HireSense — AI-Powered Talent Acquisition Platform
+# TalentX — AI-Powered Talent Acquisition Platform
 
-HireSense is a comprehensive AI-driven talent acquisition platform designed to streamline the hiring process for organizations. It leverages advanced AI models (primarily Gemini with OpenAI fallback) to analyze resumes, assess culture fit, perform diversity analytics, and facilitate talent discovery.
+TalentX is a comprehensive AI-driven talent acquisition platform designed to streamline the hiring process for organizations. It leverages advanced AI models (primarily Gemini with OpenAI fallback) to analyze resumes, assess culture fit, perform diversity analytics, and facilitate talent discovery.
 
 ## Features
 
@@ -79,8 +79,8 @@ HireSense is a comprehensive AI-driven talent acquisition platform designed to s
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/shahk87654/HireSense.git
-cd HireSense
+git clone https://github.com/shahk87654/TalentX.git
+cd TalentX
 ```
 
 2. Install dependencies:
@@ -93,7 +93,7 @@ cd server && npm install && cd ..
 3. Set up environment variables (create `.env` in server directory):
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/hiresense
+MONGODB_URI=mongodb://localhost:27017/talentx
 JWT_SECRET=your_jwt_secret
 GEMINI_API_KEY=your_gemini_api_key
 # Optional OpenAI fallback
@@ -120,7 +120,7 @@ The application will be available at:
 ## Project Structure
 
 ```
-HireSense/
+TalentX/
 ├── client/                 # React frontend
 │   ├── src/
 │   │   ├── components/     # Reusable UI components
@@ -131,7 +131,7 @@ HireSense/
 │   ├── src/
 │   │   ├── config/         # Database and AI configs
 │   │   ├── controllers/    # Route handlers
-│   │   ├── middleware/     # Auth and security
+│   │   ├── middleware/    # Auth and security
 │   │   ├── models/         # MongoDB schemas
 │   │   ├── routes/         # API endpoints
 │   │   └── services/       # AI and business logic
@@ -163,6 +163,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## About
 
-HireSense was built to revolutionize talent acquisition by combining cutting-edge AI technology with intuitive user interfaces. Our platform helps organizations make data-driven hiring decisions while promoting diversity and cultural alignment in the workplace.
+TalentX was built to revolutionize talent acquisition by combining cutting-edge AI technology with intuitive user interfaces. Our platform helps organizations make data-driven hiring decisions while promoting diversity and cultural alignment in the workplace.
 
-For more information, visit our [GitHub repository](https://github.com/shahk87654/HireSense).
+For more information, visit our [GitHub repository](https://github.com/shahk87654/TalentX).

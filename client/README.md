@@ -1,6 +1,6 @@
-# HireSense Client
+# TalentX Client
 
-Frontend client for HireSense. Uses Vite + React + Tailwind.
+Frontend client for TalentX. Uses Vite + React + Tailwind.
 
 Run (Windows PowerShell):
 

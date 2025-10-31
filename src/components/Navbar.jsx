@@ -14,7 +14,7 @@ export default function Navbar() {
           animate={{ rotate: [0, 10, -10, 0] }}
           transition={{ repeat: Infinity, duration: 6 }}
         >HS</motion.div>
-        <div className="text-sm text-slate-600">HireSense</div>
+        <div className="text-sm text-slate-600">TalentX</div>
       </div>
       <div className="flex items-center gap-4">
         <div className="text-sm text-slate-600">{user?.name || 'HR Admin'}</div>

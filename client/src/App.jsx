@@ -21,6 +21,22 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+  const token = useAuthStore((s) => s.token)
+
+  if (!token) {
+    return (
+      <Suspense fallback={<div className="w-full h-64 flex items-center justify-center">Loading...</div>}>
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/refer" element={<EmployeeReferral />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </motion.div>
+      </Suspense>
+    )
+  }
+
   return (
     <div className="min-h-screen flex">
       <Sidebar />
@@ -30,7 +46,6 @@ export default function App() {
           <Suspense fallback={<div className="w-full h-64 flex items-center justify-center">Loading...</div>}>
             <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
               <Routes>
-                <Route path="/login" element={<Login />} />
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/resume" element={<ProtectedRoute><ResumeScreening /></ProtectedRoute>} />

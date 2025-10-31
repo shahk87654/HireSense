@@ -10,7 +10,7 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showDemo, setShowDemo] = useState(false)
+
   const setToken = useAuthStore((s) => s.setToken)
   const setUser = useAuthStore((s) => s.setUser)
   const token = useAuthStore((s) => s.token)
@@ -44,11 +44,7 @@ export default function Login() {
     }
   }
 
-  const fillDemoCredentials = () => {
-    setEmail('hr@gno.com.pk')
-    setPassword('GOPAK')
-    setShowDemo(false)
-  }
+
 
   return (
     <div className="min-h-screen flex">
@@ -67,7 +63,7 @@ export default function Login() {
               animate={{ rotate: [0, 2, -2, 0] }}
               transition={{ duration: 6, repeat: Infinity }}
             >
-              HireSense
+              TalentX
             </motion.div>
             <motion.p
               className="text-xl mb-8 opacity-90 max-w-md"
@@ -139,29 +135,7 @@ export default function Login() {
               </motion.p>
             </div>
 
-            {/* Demo Credentials Banner */}
-            <motion.div
-              className="mb-6 p-4 bg-gradient-to-r from-orange-100 to-pink-100 rounded-xl border border-orange-200"
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="demo-badge">Demo</div>
-                  <div className="text-sm text-slate-700">
-                    <div className="font-medium">Try demo credentials</div>
-                    <div className="text-xs text-slate-600">hr@gno.com.pk / GOPAK</div>
-                  </div>
-                </div>
-                <button
-                  onClick={fillDemoCredentials}
-                  className="text-xs bg-primary text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Use Demo
-                </button>
-              </div>
-            </motion.div>
+
 
             <form onSubmit={submit} className="space-y-6">
               <motion.div

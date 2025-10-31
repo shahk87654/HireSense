@@ -6,7 +6,7 @@ export default function Sidebar() {
   return (
     <aside className="w-64 bg-white h-screen border-r p-4 hidden md:block">
       <div className="mb-6">
-        <div className="text-xl font-semibold">HireSense</div>
+        <div className="text-xl font-semibold">TalentX</div>
         <div className="text-sm text-slate-500">AI Talent Platform</div>
       </div>
       <nav className="flex flex-col gap-2">
